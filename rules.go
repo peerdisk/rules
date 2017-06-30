@@ -2,8 +2,11 @@ package rules
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strings"
+
+	"math"
 
 	"github.com/pkg/errors"
 )
@@ -45,8 +48,34 @@ func ParseRule(rule string) (Rule, error) {
 	return r, nil
 }
 
+// String returns the string representation of the rule.
+func (r Rule) String() string {
+	return fmt.Sprintf("interval %v keep %v", r.Interval, r.Keep)
+}
+
 // RuleSet contains a series of rules
 type RuleSet []Rule
+
+// Validate validates the behaviour of a rule set.
+func (rs RuleSet) Validate() error {
+	lowest := Duration(math.MaxUint64)
+	for _, rule := range rs {
+		if rule.Keep < rule.Interval {
+			return errors.Errorf("%q has a keep lower than it's interval", rule.String())
+		}
+		if rule.Interval < lowest {
+			lowest = rule.Interval
+		}
+	}
+
+	for _, rule := range rs {
+		if rule.Interval%lowest != 0 {
+			return errors.Errorf("%v doesn't divide into lowest interval %v", rule.Interval, lowest)
+		}
+	}
+
+	return nil
+}
 
 // Parse parses a rule set.
 // It just addresses the structure of the rule file, not the behaviour.

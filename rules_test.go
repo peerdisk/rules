@@ -78,3 +78,69 @@ func TestParse(t *testing.T) {
 		})
 	}
 }
+
+func TestRule_String(t *testing.T) {
+	type fields struct {
+		Interval Duration
+		Keep     Duration
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   string
+	}{
+	// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := Rule{
+				Interval: tt.fields.Interval,
+				Keep:     tt.fields.Keep,
+			}
+			if got := r.String(); got != tt.want {
+				t.Errorf("Rule.String() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestRuleSet_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		rs      RuleSet
+		wantErr bool
+	}{
+		{
+			"ok",
+			RuleSet{
+				Rule{Interval: MustParseDuration("6h"), Keep: MustParseDuration("6d")},
+				Rule{Interval: MustParseDuration("2d"), Keep: MustParseDuration("2mo")},
+			},
+			false,
+		},
+		{
+			"doesnt divide",
+			RuleSet{
+				Rule{Interval: MustParseDuration("6h"), Keep: MustParseDuration("6d")},
+				Rule{Interval: MustParseDuration("2d2m"), Keep: MustParseDuration("2m")},
+			},
+			true,
+		},
+		{
+			"keep too low",
+			RuleSet{
+				Rule{Interval: MustParseDuration("6h"), Keep: MustParseDuration("1h")},
+				Rule{Interval: MustParseDuration("2d"), Keep: MustParseDuration("2m")},
+			},
+			true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.rs.Validate(); (err != nil) != tt.wantErr {
+				t.Errorf("RuleSet.Validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
