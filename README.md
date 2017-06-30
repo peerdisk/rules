@@ -4,9 +4,8 @@ The PeerDisk backup service's ruleset parser.
 
 ## Syntax
 
-A "Hello World" for rules:
-
 ```bash
+# this is a comment
 # the shortest interval should be a common denominator for the others
 interval 6h keep 1w
 interval 2d keep 1m
