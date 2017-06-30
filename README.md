@@ -6,7 +6,7 @@ The PeerDisk backup service's ruleset parser.
 
 ```bash
 # this is a comment
-# the shortest interval should be a common denominator for the others
+# the shortest interval should be a common denominator
 interval 6h keep 1w
 interval 2d keep 1m
 interval 7d keep 1y
