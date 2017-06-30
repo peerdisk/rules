@@ -17,9 +17,9 @@ interval 7d keep 1y
 
 Duration parsing is very flexible.
 
-A duration token consistens of a series of coefficient and unit tuples.
+A duration token consists of a series of coefficient/unit tuples.
 
-The coefficient must be positive, it may decimal.
+The coefficient must be positive. It may be decimal.
 
 The following units are available: 
 
