@@ -1,6 +1,6 @@
 # rules
 
-PeerDisk backup rules parser.
+The PeerDisk backup service's ruleset parser.
 
 ## Syntax
 
@@ -8,9 +8,9 @@ A "Hello World" for rules:
 
 ```bash
 # the shortest interval should be a common denominator for the others
-interval 6h, keep 1 week
-interval 2d, keep 1 month
-interval 7d, keep 1 year
+interval 6h keep 1w
+interval 2d keep 1m
+interval 7d keep 1year
 ```
 
 ## Interval duration parsing

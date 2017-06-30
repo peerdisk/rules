@@ -3,6 +3,7 @@ package rules
 import (
 	"bytes"
 	"strconv"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -76,6 +77,11 @@ func MustParseDuration(dur string) Duration {
 		panic(err)
 	}
 	return d
+}
+
+// Duration converts to a time.Duration
+func (d Duration) Duration() time.Duration {
+	return time.Duration(time.Second * time.Duration(d))
 }
 
 // String returns a friendly representation of duration

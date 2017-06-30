@@ -1,6 +1,10 @@
 package rules
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+	"time"
+)
 
 func TestParseDuration(t *testing.T) {
 	type args struct {
@@ -65,4 +69,22 @@ func BenchmarkParseDuration(b *testing.B) {
 	bench("1m")
 	bench("1m1s")
 	bench("1h1m5s")
+}
+
+func TestDuration_Duration(t *testing.T) {
+	tests := []struct {
+		name string
+		d    Duration
+		want time.Duration
+	}{
+		{"simple 1", MustParseDuration("1m"), time.Minute},
+		{"simple 2", MustParseDuration("1m1s"), time.Minute + time.Second},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.d.Duration(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Duration.Duration() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
