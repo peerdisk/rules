@@ -10,7 +10,7 @@ A "Hello World" for rules:
 # the shortest interval should be a common denominator for the others
 interval 6h keep 1w
 interval 2d keep 1m
-interval 7d keep 1year
+interval 7d keep 1y
 ```
 
 ## Interval duration parsing
